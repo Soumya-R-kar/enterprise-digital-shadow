@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertTriangle, Clock, CheckCircle, Activity, Brain, Download, TrendingUp, Zap } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Clock, CheckCircle, Activity, Brain, Download } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -29,8 +29,8 @@ export default function IncidentDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="glass rounded-2xl p-8 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading incident details...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-300 text-lg">Loading incident details...</p>
         </div>
       </div>
     );
@@ -41,16 +41,16 @@ export default function IncidentDetail() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="glass rounded-2xl p-8 text-center">
           <AlertTriangle className="text-red-400 mx-auto mb-4" size={64} />
-          <p className="text-white text-xl">Incident not found</p>
+          <p className="text-gray-300 text-xl">Incident not found</p>
         </div>
       </div>
     );
   }
 
   const getRiskGradient = (score) => {
-    if (score >= 80) return 'from-red-500 to-pink-500';
-    if (score >= 60) return 'from-orange-500 to-red-500';
-    return 'from-yellow-500 to-orange-500';
+    if (score >= 80) return 'from-red-600 to-red-500';
+    if (score >= 60) return 'from-orange-600 to-orange-500';
+    return 'from-yellow-600 to-yellow-500';
   };
 
   const exportToPDF = () => {
@@ -127,7 +127,7 @@ export default function IncidentDetail() {
         {/* Back Button */}
         <button 
           onClick={() => navigate('/')} 
-          className="glass text-white px-6 py-3 rounded-xl hover:bg-white/20 transition-all flex items-center gap-2 mb-6 animate-fade-in"
+          className="glass text-gray-300 px-6 py-3 rounded-xl hover:bg-white/10 transition-all flex items-center gap-2 mb-6 animate-fade-in"
         >
           <ArrowLeft size={20} /> Back to Dashboard
         </button>
@@ -142,7 +142,7 @@ export default function IncidentDetail() {
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold text-white mb-2">{data.title}</h1>
-                  <p className="text-white/60 text-lg font-mono">ID: {data.incident_id}</p>
+                  <p className="text-gray-400 text-lg font-mono">ID: {data.incident_id}</p>
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function IncidentDetail() {
               <Brain className="text-blue-400 mr-3" size={28} />
               AI-Powered Analysis
             </h2>
-            <p className="text-white/80 leading-relaxed text-lg">{data.ai_explanation}</p>
+            <p className="text-gray-300 leading-relaxed text-lg">{data.ai_explanation}</p>
           </div>
         )}
 
@@ -180,14 +180,14 @@ export default function IncidentDetail() {
               Root Cause Analysis
             </h2>
             <div className="bg-white/5 rounded-xl p-6 mb-6">
-              <p className="text-white/60 text-sm font-medium mb-2">Probable Cause</p>
+              <p className="text-gray-400 text-sm font-medium mb-2">Probable Cause</p>
               <p className="text-white text-lg font-medium">{data.root_cause}</p>
             </div>
             <div>
-              <p className="text-white/60 text-sm font-medium mb-3">Affected Systems</p>
+              <p className="text-gray-400 text-sm font-medium mb-3">Affected Systems</p>
               <div className="flex flex-wrap gap-2">
                 {data.affected_systems.map(sys => (
-                  <span key={sys} className="bg-white/10 text-white px-4 py-2 rounded-xl text-sm font-medium border border-white/20">
+                  <span key={sys} className="bg-white/10 text-gray-300 px-4 py-2 rounded-xl text-sm font-medium border border-white/20">
                     {sys}
                   </span>
                 ))}
@@ -207,7 +207,7 @@ export default function IncidentDetail() {
                   <div className="bg-gradient-to-br from-blue-500 to-purple-500 w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">
                     {index + 1}
                   </div>
-                  <p className="text-white/80 text-base pt-2">{rec}</p>
+                  <p className="text-gray-300 text-base pt-2">{rec}</p>
                 </div>
               ))}
             </div>
@@ -232,7 +232,7 @@ export default function IncidentDetail() {
                 <div className="flex-1 bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-colors">
                   <div className="flex items-center gap-4 mb-2">
                     <span className="font-mono text-cyan-400 text-sm">{event.time}</span>
-                    <span className="bg-white/10 text-white px-3 py-1 rounded-lg text-xs font-medium">
+                    <span className="bg-white/10 text-gray-300 px-3 py-1 rounded-lg text-xs font-medium">
                       {event.system}
                     </span>
                   </div>

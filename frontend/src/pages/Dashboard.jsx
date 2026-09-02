@@ -30,16 +30,16 @@ export default function Dashboard() {
   }, []);
 
   const getRiskColor = (score) => {
-    if (score >= 80) return 'from-red-500 to-pink-500';
-    if (score >= 60) return 'from-orange-500 to-red-500';
-    return 'from-yellow-500 to-orange-500';
+    if (score >= 80) return 'from-red-600 to-red-500';
+    if (score >= 60) return 'from-orange-600 to-orange-500';
+    return 'from-yellow-600 to-yellow-500';
   };
 
   const getSeverityBadge = (severity) => {
     const colors = {
-      'CRITICAL': 'bg-red-500/20 text-red-300 border-red-500/50',
-      'HIGH': 'bg-orange-500/20 text-orange-300 border-orange-500/50',
-      'MEDIUM': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50'
+      'CRITICAL': 'bg-red-500/20 text-red-400 border-red-500/50',
+      'HIGH': 'bg-orange-500/20 text-orange-400 border-orange-500/50',
+      'MEDIUM': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50'
     };
     return colors[severity] || colors['MEDIUM'];
   };
@@ -48,8 +48,8 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="glass rounded-2xl p-8 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-300 text-lg">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -61,16 +61,16 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto mb-8 animate-fade-in">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-5xl font-bold text-white mb-2 flex items-center">
-              <Shield className="mr-4" size={48} />
+            <h1 className="text-5xl font-bold mb-2 flex items-center">
+              <Shield className="mr-4 text-blue-400" size={48} />
               <span className="gradient-text">Digital Shadow</span>
             </h1>
-            <p className="text-white/70 text-lg">AI-Powered Predictive Incident Management</p>
+            <p className="text-gray-400 text-lg">AI-Powered Predictive Incident Management</p>
           </div>
           <div className="flex gap-3">
             <button 
               onClick={() => navigate('/graph')} 
-              className="glass text-white px-6 py-3 rounded-xl hover:bg-white/20 transition-all flex items-center gap-2 font-medium"
+              className="glass text-gray-300 px-6 py-3 rounded-xl hover:bg-white/10 transition-all flex items-center gap-2 font-medium"
             >
               <Activity size={20} /> Dependency Graph
             </button>
@@ -90,10 +90,10 @@ export default function Dashboard() {
               <div className="bg-blue-500/20 p-3 rounded-xl">
                 <Zap className="text-blue-400" size={24} />
               </div>
-              <span className="text-white/50 text-sm">Total</span>
+              <span className="text-gray-500 text-sm">Total</span>
             </div>
             <p className="text-4xl font-bold text-white">{stats.total}</p>
-            <p className="text-white/60 text-sm mt-1">Active Incidents</p>
+            <p className="text-gray-400 text-sm mt-1">Active Incidents</p>
           </div>
 
           <div className="glass rounded-2xl p-6 card-hover">
@@ -101,10 +101,10 @@ export default function Dashboard() {
               <div className="bg-red-500/20 p-3 rounded-xl">
                 <AlertTriangle className="text-red-400" size={24} />
               </div>
-              <span className="text-white/50 text-sm">Critical</span>
+              <span className="text-gray-500 text-sm">Critical</span>
             </div>
             <p className="text-4xl font-bold text-white">{stats.critical}</p>
-            <p className="text-white/60 text-sm mt-1">Requires Attention</p>
+            <p className="text-gray-400 text-sm mt-1">Requires Attention</p>
           </div>
 
           <div className="glass rounded-2xl p-6 card-hover">
@@ -112,10 +112,10 @@ export default function Dashboard() {
               <div className="bg-orange-500/20 p-3 rounded-xl">
                 <Clock className="text-orange-400" size={24} />
               </div>
-              <span className="text-white/50 text-sm">High</span>
+              <span className="text-gray-500 text-sm">High</span>
             </div>
             <p className="text-4xl font-bold text-white">{stats.high}</p>
-            <p className="text-white/60 text-sm mt-1">High Priority</p>
+            <p className="text-gray-400 text-sm mt-1">High Priority</p>
           </div>
 
           <div className="glass rounded-2xl p-6 card-hover">
@@ -123,10 +123,10 @@ export default function Dashboard() {
               <div className="bg-purple-500/20 p-3 rounded-xl">
                 <Users className="text-purple-400" size={24} />
               </div>
-              <span className="text-white/50 text-sm">Systems</span>
+              <span className="text-gray-500 text-sm">Systems</span>
             </div>
             <p className="text-4xl font-bold text-white">8</p>
-            <p className="text-white/60 text-sm mt-1">Monitored</p>
+            <p className="text-gray-400 text-sm mt-1">Monitored</p>
           </div>
         </div>
       </div>
@@ -145,21 +145,21 @@ export default function Dashboard() {
             <table className="w-full">
               <thead className="bg-white/5">
                 <tr className="text-left">
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Incident ID</th>
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Title</th>
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Severity</th>
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Risk Score</th>
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Status</th>
-                  <th className="px-8 py-4 text-white/70 text-sm font-semibold uppercase tracking-wider">Action</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Incident ID</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Title</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Severity</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Risk Score</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Status</th>
+                  <th className="px-8 py-4 text-gray-400 text-sm font-semibold uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
                 {incidents.length === 0 ? (
                   <tr>
                     <td colSpan="6" className="px-8 py-16 text-center">
-                      <div className="text-white/50">
+                      <div className="text-gray-500">
                         <Shield size={64} className="mx-auto mb-4 opacity-30" />
-                        <p className="text-xl font-medium">System is Healthy</p>
+                        <p className="text-xl font-medium text-gray-400">System is Healthy</p>
                         <p className="text-sm mt-2">No incidents detected</p>
                       </div>
                     </td>
@@ -168,7 +168,7 @@ export default function Dashboard() {
                   incidents.map((incident, idx) => (
                     <tr key={incident.id} className="hover:bg-white/5 transition-colors animate-slide-in" style={{ animationDelay: `${idx * 0.1}s` }}>
                       <td className="px-8 py-6">
-                        <span className="font-mono text-sm text-white/80 bg-white/10 px-3 py-1 rounded-lg">
+                        <span className="font-mono text-sm text-gray-300 bg-white/10 px-3 py-1 rounded-lg">
                           {incident.incident_id}
                         </span>
                       </td>
@@ -192,7 +192,7 @@ export default function Dashboard() {
                         </div>
                       </td>
                       <td className="px-8 py-6">
-                        <span className="flex items-center gap-2 text-white/80">
+                        <span className="flex items-center gap-2 text-gray-300">
                           <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
                           {incident.status}
                         </span>

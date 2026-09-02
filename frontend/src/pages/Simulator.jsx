@@ -34,9 +34,9 @@ export default function Simulator() {
   };
 
   const getRiskGradient = (risk) => {
-    if (risk === 'CRITICAL') return 'from-red-500 to-pink-500';
-    if (risk === 'HIGH') return 'from-orange-500 to-red-500';
-    return 'from-yellow-500 to-orange-500';
+    if (risk === 'CRITICAL') return 'from-red-600 to-red-500';
+    if (risk === 'HIGH') return 'from-orange-600 to-orange-500';
+    return 'from-yellow-600 to-orange-500';
   };
 
   return (
@@ -45,18 +45,18 @@ export default function Simulator() {
         {/* Back Button */}
         <button 
           onClick={() => navigate('/')} 
-          className="glass text-white px-6 py-3 rounded-xl hover:bg-white/20 transition-all flex items-center gap-2 mb-6 animate-fade-in"
+          className="glass text-gray-300 px-6 py-3 rounded-xl hover:bg-white/10 transition-all flex items-center gap-2 mb-6 animate-fade-in"
         >
           <ArrowLeft size={20} /> Back to Dashboard
         </button>
 
         {/* Header */}
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-5xl font-bold text-white mb-3 flex items-center">
-            <TrendingUp className="mr-4" size={48} />
+          <h1 className="text-5xl font-bold mb-3 flex items-center">
+            <TrendingUp className="mr-4 text-blue-400" size={48} />
             <span className="gradient-text">What-If Simulator</span>
           </h1>
-          <p className="text-white/70 text-xl">Predict the business impact of hypothetical system failures</p>
+          <p className="text-gray-400 text-xl">Predict the business impact of hypothetical system failures</p>
         </div>
 
         {/* Simulator Card */}
@@ -77,7 +77,7 @@ export default function Simulator() {
               >
                 <div className="text-4xl mb-3">{sys.icon}</div>
                 <p className="text-white font-bold text-lg mb-1">{sys.name}</p>
-                <p className="text-white/60 text-sm">{sys.desc}</p>
+                <p className="text-gray-400 text-sm">{sys.desc}</p>
               </button>
             ))}
           </div>
@@ -112,19 +112,19 @@ export default function Simulator() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white/5 rounded-xl p-6 text-center">
                 <Shield className="mx-auto mb-3 text-red-400" size={40} />
-                <p className="text-white/60 text-sm mb-2">Business Risk</p>
+                <p className="text-gray-400 text-sm mb-2">Business Risk</p>
                 <span className={`inline-block bg-gradient-to-r ${getRiskGradient(result.business_risk)} px-6 py-2 rounded-full text-white font-bold`}>
                   {result.business_risk}
                 </span>
               </div>
               <div className="bg-white/5 rounded-xl p-6 text-center">
                 <Users className="mx-auto mb-3 text-blue-400" size={40} />
-                <p className="text-white/60 text-sm mb-2">Users Impacted</p>
+                <p className="text-gray-400 text-sm mb-2">Users Impacted</p>
                 <p className="text-4xl font-bold text-white">{result.estimated_users_impacted.toLocaleString()}</p>
               </div>
               <div className="bg-white/5 rounded-xl p-6 text-center">
                 <Building className="mx-auto mb-3 text-purple-400" size={40} />
-                <p className="text-white/60 text-sm mb-2">Departments</p>
+                <p className="text-gray-400 text-sm mb-2">Departments</p>
                 <p className="text-4xl font-bold text-white">{result.affected_departments.length}</p>
               </div>
             </div>
@@ -138,8 +138,8 @@ export default function Simulator() {
                     key={service} 
                     className={`px-5 py-3 rounded-xl font-medium ${
                       idx === 0 
-                        ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white' 
-                        : 'bg-white/10 text-white border border-white/20'
+                        ? 'bg-gradient-to-r from-red-600 to-red-500 text-white' 
+                        : 'bg-white/10 text-gray-300 border border-white/20'
                     }`}
                   >
                     {idx === 0 ? '🔥 ' : '➔ '}{service}
