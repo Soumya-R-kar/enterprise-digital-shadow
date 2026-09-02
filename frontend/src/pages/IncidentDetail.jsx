@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertTriangle, Clock, CheckCircle, Activity, Brain, Download } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Clock, CheckCircle, Activity, Brain, Download, TrendingUp, Zap } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -25,13 +25,32 @@ export default function IncidentDetail() {
       });
   }, [id]);
 
-  if (loading) return <div className="p-8 text-center text-gray-500">Loading incident details...</div>;
-  if (!data) return <div className="p-8 text-center text-red-500">Incident not found.</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="glass rounded-2xl p-8 text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading incident details...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const getRiskColor = (score) => {
-    if (score >= 80) return 'text-red-600 bg-red-100 border-red-200';
-    if (score >= 60) return 'text-orange-600 bg-orange-100 border-orange-200';
-    return 'text-yellow-600 bg-yellow-100 border-yellow-200';
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="glass rounded-2xl p-8 text-center">
+          <AlertTriangle className="text-red-400 mx-auto mb-4" size={64} />
+          <p className="text-white text-xl">Incident not found</p>
+        </div>
+      </div>
+    );
+  }
+
+  const getRiskGradient = (score) => {
+    if (score >= 80) return 'from-red-500 to-pink-500';
+    if (score >= 60) return 'from-orange-500 to-red-500';
+    return 'from-yellow-500 to-orange-500';
   };
 
   const exportToPDF = () => {
@@ -103,94 +122,125 @@ export default function IncidentDetail() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <button onClick={() => navigate('/')} className="flex items-center text-gray-600 hover:text-blue-600 mb-6">
-        <ArrowLeft size={20} className="mr-2" /> Back to Dashboard
-      </button>
+    <div className="min-h-screen p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <button 
+          onClick={() => navigate('/')} 
+          className="glass text-white px-6 py-3 rounded-xl hover:bg-white/20 transition-all flex items-center gap-2 mb-6 animate-fade-in"
+        >
+          <ArrowLeft size={20} /> Back to Dashboard
+        </button>
 
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-red-500">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-              <AlertTriangle className="text-red-500 mr-2" size={24} />
-              {data.title}
-            </h1>
-            <p className="text-gray-500 mt-1">Incident ID: <span className="font-mono">{data.incident_id}</span></p>
-          </div>
-          <div className="flex gap-3">
-            <button onClick={exportToPDF} className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-              <Download size={16} className="mr-2" /> Export PDF
-            </button>
-            <div className={`px-4 py-2 rounded-lg border text-xl font-bold ${getRiskColor(data.risk_score)}`}>
-              Risk: {data.risk_score}/100
+        {/* Incident Header */}
+        <div className="glass rounded-2xl p-8 mb-6 animate-fade-in pulse-glow">
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="bg-red-500/20 p-4 rounded-2xl">
+                  <AlertTriangle className="text-red-400" size={40} />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold text-white mb-2">{data.title}</h1>
+                  <p className="text-white/60 text-lg font-mono">ID: {data.incident_id}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 items-end">
+              <button 
+                onClick={exportToPDF} 
+                className="btn-success text-white px-6 py-3 rounded-xl flex items-center gap-2 font-medium"
+              >
+                <Download size={20} /> Export PDF
+              </button>
+              <div className={`bg-gradient-to-r ${getRiskGradient(data.risk_score)} px-8 py-4 rounded-2xl text-center`}>
+                <p className="text-white/80 text-sm font-medium mb-1">Risk Score</p>
+                <p className="text-5xl font-bold text-white">{data.risk_score}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {data.ai_explanation && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-blue-500">
-          <h2 className="text-lg font-semibold mb-3 flex items-center text-gray-800">
-            <Brain className="text-blue-500 mr-2" size={20} /> AI-Powered Explanation
-          </h2>
-          <p className="text-gray-700 leading-relaxed text-base">{data.ai_explanation}</p>
-        </div>
-      )}
+        {/* AI Explanation */}
+        {data.ai_explanation && (
+          <div className="glass rounded-2xl p-8 mb-6 animate-fade-in border-l-4 border-blue-500">
+            <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <Brain className="text-blue-400 mr-3" size={28} />
+              AI-Powered Analysis
+            </h2>
+            <p className="text-white/80 leading-relaxed text-lg">{data.ai_explanation}</p>
+          </div>
+        )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
-            <Activity className="text-blue-500 mr-2" size={20} /> Analysis
-          </h2>
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Possible Root Cause</p>
-              <p className="text-gray-800 font-medium mt-1">{data.root_cause}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Root Cause */}
+          <div className="glass rounded-2xl p-8 animate-slide-in">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+              <Activity className="text-purple-400 mr-3" size={28} />
+              Root Cause Analysis
+            </h2>
+            <div className="bg-white/5 rounded-xl p-6 mb-6">
+              <p className="text-white/60 text-sm font-medium mb-2">Probable Cause</p>
+              <p className="text-white text-lg font-medium">{data.root_cause}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 font-medium">Affected Systems</p>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <p className="text-white/60 text-sm font-medium mb-3">Affected Systems</p>
+              <div className="flex flex-wrap gap-2">
                 {data.affected_systems.map(sys => (
-                  <span key={sys} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">{sys}</span>
+                  <span key={sys} className="bg-white/10 text-white px-4 py-2 rounded-xl text-sm font-medium border border-white/20">
+                    {sys}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
-            <CheckCircle className="text-green-500 mr-2" size={20} /> Recommended Actions
-          </h2>
-          <ul className="space-y-3">
-            {data.recommendations.map((rec, index) => (
-              <li key={index} className="flex items-start">
-                <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">{index + 1}</span>
-                <span className="text-gray-700">{rec}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
-        <h2 className="text-lg font-semibold mb-4 flex items-center text-gray-800">
-          <Clock className="text-purple-500 mr-2" size={20} /> Event Timeline
-        </h2>
-        <div className="space-y-4">
-          {data.timeline.map((event, index) => (
-            <div key={index} className="flex items-start">
-              <div className="flex flex-col items-center mr-4">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                {index !== data.timeline.length - 1 && <div className="w-0.5 h-full bg-gray-200 mt-1"></div>}
-              </div>
-              <div className="pb-4">
-                <p className="text-sm font-mono text-gray-500">{event.time}</p>
-                <p className="text-gray-800 font-medium">{event.description}</p>
-                <p className="text-sm text-gray-500">System: {event.system}</p>
-              </div>
+          {/* Recommendations */}
+          <div className="glass rounded-2xl p-8 animate-slide-in">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+              <CheckCircle className="text-green-400 mr-3" size={28} />
+              Recommended Actions
+            </h2>
+            <div className="space-y-4">
+              {data.recommendations.map((rec, index) => (
+                <div key={index} className="flex items-start gap-4 bg-white/5 rounded-xl p-4">
+                  <div className="bg-gradient-to-br from-blue-500 to-purple-500 w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">
+                    {index + 1}
+                  </div>
+                  <p className="text-white/80 text-base pt-2">{rec}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="glass rounded-2xl p-8 animate-fade-in">
+          <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+            <Clock className="text-cyan-400 mr-3" size={28} />
+            Event Timeline
+          </h2>
+          <div className="space-y-4">
+            {data.timeline.map((event, index) => (
+              <div key={index} className="flex items-start gap-6 animate-slide-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="flex flex-col items-center">
+                  <div className="bg-gradient-to-br from-cyan-500 to-blue-500 w-4 h-4 rounded-full pulse-glow"></div>
+                  {index !== data.timeline.length - 1 && (
+                    <div className="w-0.5 h-16 bg-gradient-to-b from-cyan-500/50 to-transparent mt-2"></div>
+                  )}
+                </div>
+                <div className="flex-1 bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-colors">
+                  <div className="flex items-center gap-4 mb-2">
+                    <span className="font-mono text-cyan-400 text-sm">{event.time}</span>
+                    <span className="bg-white/10 text-white px-3 py-1 rounded-lg text-xs font-medium">
+                      {event.system}
+                    </span>
+                  </div>
+                  <p className="text-white text-lg font-medium">{event.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
